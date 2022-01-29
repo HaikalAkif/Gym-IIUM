@@ -45,8 +45,7 @@ void totalCollection();
 
 void checkFile();
 
-int main()
-{
+int main(){
 
     while(true){
         
@@ -71,9 +70,7 @@ int main()
     }
 }
 
-
-void totalCollection()
-{
+void totalCollection(){
     ifstream paymentFile;
     double type[6];
 
@@ -98,8 +95,7 @@ void totalCollection()
     system("pause>nul");
 }
 
-void dailyCollection()
-{
+void dailyCollection(){
     ifstream daily;
     string temp[2];
     double temp2;
@@ -123,11 +119,9 @@ void dailyCollection()
     }
     cout << "Press any key to continue: ";
     system("pause>nul");
-    
 }
 
-void Services()
-{
+void Services(){
     char op;
 
     do{
@@ -149,8 +143,7 @@ void Services()
     
 }
 
-void Review()
-{
+void Review(){
     ifstream reviewFile;
     vector<string> lines;
     int type, qty;
@@ -178,11 +171,9 @@ void Review()
     }
     cout << "Press any key to continue: ";
     system("pause>nul");
-    
 }
 
-void Add()
-{
+void Add(){
     string name;
     int matNo;
     int phoneNo;
@@ -229,12 +220,9 @@ void Add()
         repeat = getch();
 
     }while(repeat == 'Y' || repeat == 'y');
-
-
 }
 
-void checkOut(double totalCharge,vector<Cart>& cart)
-{
+void checkOut(double totalCharge,vector<Cart>& cart){
     system("cls");
     cout << "Services\t\tQty\tPrice (RM)" << endl;
 
@@ -259,8 +247,7 @@ void checkOut(double totalCharge,vector<Cart>& cart)
     cart.clear();
 }
 
-void collectionFile(vector<Cart>& cart,double totalCharge)
-{
+void collectionFile(vector<Cart>& cart,double totalCharge){
     fstream cFile;
     double type[6] = {0,0,0,0,0,0};
     string tempp;
@@ -319,8 +306,7 @@ void collectionFile(vector<Cart>& cart,double totalCharge)
     } 
 }
 
-void custFile(vector<Cart>& cart)
-{
+void custFile(vector<Cart>& cart){
     ofstream cust;
 
     cust.open("Customers.txt",fstream::app);
@@ -332,8 +318,7 @@ void custFile(vector<Cart>& cart)
     cust.close();
 }
 
-void dailyFile(double totalCharge)
-{
+void dailyFile(double totalCharge){
     fstream outputFile;
 
     vector<string> date;
@@ -378,11 +363,9 @@ void dailyFile(double totalCharge)
             newDaily.close();
         }    
     } 
-
 }
 
-string getTime()
-{
+string getTime(){
     time_t rawtime;
     struct tm * timeinfo;
     char buffer[80];
@@ -395,8 +378,7 @@ string getTime()
     return str;
 }
 
-double Calc(char op, vector<Cart>& cart)
-{
+double Calc(char op, vector<Cart>& cart){
     int qty;
     int type;
     string notes;

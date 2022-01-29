@@ -52,7 +52,7 @@ int main()
         
         system("cls");
 
-        cout << "Gym da iium" << endl;
+        cout << "IIUM Gym Management" << endl;
         cout << "1. Services" << endl;
         cout << "2. Daily collection " << endl;
         cout << "3. Display total collection by service type" << endl;
@@ -195,13 +195,13 @@ void Add()
     do{
         system("cls");
         cout << "Enter the following" << endl;
-        cout << "Name: ";
+        cout << "Full Name: ";
 
         getline(cin,name);
 
-        cout << "Matric No: ";
+        cout << "Matric Number: ";
         cin >> matNo;
-        cout << "Phone No: ";
+        cout << "Phone Number: ";
         cin >> phoneNo;
 
         do{
@@ -225,7 +225,7 @@ void Add()
         checkOut(totalCharge,cart);
 
         system("cls");
-        cout << "Repeat the order? (Y/y) to repeat: ";
+        cout << "Repeat the order? (Y/y) to repeat\nPress any key to continue: ";
         repeat = getch();
 
     }while(repeat == 'Y' || repeat == 'y');

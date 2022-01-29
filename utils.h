@@ -6,7 +6,6 @@
 #include <stdlib.h>
 
 namespace utils {
-
     // Change the color of the font in the program
     void fontColor(int Color){
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), Color);
@@ -45,6 +44,5 @@ namespace utils {
         SetConsoleCursorPosition(Console, CursorPosition);
     }
 }
-
 
 #endif

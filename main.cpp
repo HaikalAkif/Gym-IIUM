@@ -4,8 +4,10 @@
 #include <fstream>
 #include <string>
 #include <ctime>
+#include "utils.h"
 
 using namespace std;
+using namespace utils;
 
 struct Service {
     int type;
@@ -21,7 +23,7 @@ struct Cart {
 };
 
 const Service serv[6] = {{1,"Entry fee", 5.00},
-                         {2,"Weigh Loss Challenges", 5.00},
+                         {2,"Weight Loss Challenges", 5.00},
                          {3,"Lifestyles Seminars",6.00},
                          {4,"Personal Training",10.00},
                          {5,"Pool",5.00},
@@ -73,7 +75,7 @@ int main()
 void totalCollection()
 {
     ifstream paymentFile;
-    double type1, type2, type3, type4, type5, totalCharge;
+    double type[6];
 
     paymentFile.open("Collection.txt");
 
@@ -81,8 +83,12 @@ void totalCollection()
 
     if(paymentFile.is_open())
     {
-        paymentFile >> type1 >> type2 >> type3 >> type4 >> type5 >> totalCharge;
-        cout << "Total collections: " << totalCharge << endl;
+        for(int i = 0; i < 6; i++){
+            paymentFile >> type[i];
+            if(i < 5)
+                cout << serv[i + 1].name << "\t: " << type[i] << endl;
+        }
+        cout << "Total collections: " << type[5] << endl;
         
     } else {
         cout << "ERROR! A file is currently missing!" << endl;
@@ -95,7 +101,7 @@ void totalCollection()
 void dailyCollection()
 {
     ifstream daily;
-    string temp1;
+    string temp[2];
     double temp2;
 
     daily.open("dailyCollection.txt");
@@ -103,10 +109,13 @@ void dailyCollection()
 
     if(daily.is_open())
     {
-        cout << "Date\tCollections" << endl;
+        cout << "Date\t\tCollections" << endl;
         while(!daily.eof()){
-            daily >> temp1 >> temp2;
-            cout << temp1 << "\t" << temp2 << endl;
+            for(int i = 0; i < 2; i++){
+                daily >> temp[i];
+                cout << temp[i] << "\t\t";
+            }
+            cout << endl;
         }
     } else {
         cout << "ERROR! A file is currently missing!" << endl;
@@ -147,17 +156,21 @@ void Review()
     int type, qty;
     double payment;
     string notes;
-    string temp;
+    string input[4];
 
     reviewFile.open("Customers.txt");
     system("cls");
 
-    cout << "History of the customers' transactions" << endl;
 
     if(reviewFile.is_open()){
+        cout << "History of the customers' transactions" << endl;
+        cout << "\nService type\tQuantity\tPayment\tNotes" << endl;
         while(!reviewFile.eof()){
-            getline(reviewFile,temp);
-            cout << temp << endl;
+            for(int i = 0; i < 4; i++){
+                reviewFile >> input[i];
+                cout << input[i] << "\t";
+            }
+            cout << endl;
         }
     } else {
         cout << "ERROR! A file is currently missing!" << endl;
@@ -250,34 +263,18 @@ void collectionFile(vector<Cart>& cart,double totalCharge)
 {
     fstream cFile;
     double type[6] = {0,0,0,0,0,0};
+    string tempp;
 
     cFile.open("Collection.txt");
 
     if(cFile.is_open()){
 
-        cFile >> type[0] >> type[1] >> type[3] >> type[4] >> type[5];
+        getline(cFile,tempp);
+        if(tempp != ""){
 
-        for(int i = 0 ; i < cart.size(); i++){
-            switch(cart[i].type){
-                case 2: type[0] += cart[i].payment; break;
-                case 3: type[1] += cart[i].payment; break;
-                case 4: type[2] += cart[i].payment; break;
-                case 5: type[3] += cart[i].payment; break;
-                case 6: type[4] += cart[i].payment; break;
+            for(int i = 0; i < 6; i++){
+                cFile >> type[i];
             }
-        }
-        type[5] += totalCharge;
-
-        for(int i = 0; i < 6; i++){
-            cFile << type[i] << " ";
-        }
-        cFile.close();
-    
-    } else {
-
-        ofstream newCollection;
-        newCollection.open("Collection.txt");
-        if(newCollection.is_open()){
 
             for(int i = 0 ; i < cart.size(); i++){
                 switch(cart[i].type){
@@ -291,31 +288,48 @@ void collectionFile(vector<Cart>& cart,double totalCharge)
             type[5] += totalCharge;
 
             for(int i = 0; i < 6; i++){
-                newCollection << type[i] << " ";
+                cFile << type[i] << " ";
             }
-            newCollection.close();
-        }
-    }       
+            cFile.close();
+
+        } else {
+
+            ofstream newCollection;
+            newCollection.open("Collection.txt");
+            if(newCollection.is_open()){
+
+                for(int i = 0 ; i < cart.size(); i++){
+                    switch(cart[i].type){
+                        case 2: type[0] += cart[i].payment; break;
+                        case 3: type[1] += cart[i].payment; break;
+                        case 4: type[2] += cart[i].payment; break;
+                        case 5: type[3] += cart[i].payment; break;
+                        case 6: type[4] += cart[i].payment; break;
+                    }
+                }
+                type[5] += totalCharge;
+
+                for(int i = 0; i < 6; i++){
+                    newCollection << type[i] << " ";
+                }
+                newCollection.close();
+            }
+        }       
+
+    } 
 }
 
 void custFile(vector<Cart>& cart)
 {
-    fstream cust;
+    ofstream cust;
 
     cust.open("Customers.txt",fstream::app);
 
-    if(cust.is_open()){
-        for(int i = 0; i < cart.size(); i++){
-            cust << cart[i].type << " " << cart[i].qty << " " << cart[i].payment << " " << cart[i].notes << endl;
-        }
-    } else {
-        ofstream newCust;
-        newCust.open("Customers.txt");
-        for(int i = 0; i < cart.size(); i++){
-            newCust << cart[i].type << " " << cart[i].qty << " " << cart[i].payment << " " << cart[i].notes << endl;
-        }
-        newCust.close();
+    for(int i = 0; i < cart.size(); i++){
+        cust << cart[i].type << " " << cart[i].qty << " " << cart[i].payment << " " << cart[i].notes << endl;
     }
+
+    cust.close();
 }
 
 void dailyFile(double totalCharge)
@@ -326,39 +340,45 @@ void dailyFile(double totalCharge)
     vector<double> value;
     string temp1;
     double temp2;
+    string tempp;
 
     string str = getTime();
 
-    outputFile.open("dailyCollection.txt");
+    outputFile.open("dailyCollection.txt",fstream::app);
 
     if(outputFile.is_open()){
 
-        while(!outputFile.eof()){
-            outputFile >> temp1 >> temp2;
-            date.push_back(temp1);
-            value.push_back(temp2);
-        }
+        getline(outputFile,tempp);
+        if(tempp != ""){
 
-        for(unsigned int i = 0; i < date.size(); i++){
-            if(date[i] == str){
-                value[i] += totalCharge;
-                break;
+            while(!outputFile.eof()){
+                outputFile >> temp1 >> temp2;
+                date.push_back(temp1);
+                value.push_back(temp2);
             }
-        }
 
-        for(unsigned int i = 0; i < date.size(); i++){
-            outputFile << date[i] << " " << value[i] << endl;
-        }
-        outputFile.close();
-    
-    } else {
-        
-        ofstream newDaily;
-        newDaily.open("dailyCollection.txt");
-        
-        newDaily << str << " " << totalCharge << endl;
-        newDaily.close();
-    }    
+            for(unsigned int i = 0; i < date.size(); i++){
+                if(date[i] == str){
+                    value[i] += totalCharge;
+                    break;
+                }
+            }
+
+            for(unsigned int i = 0; i < date.size(); i++){
+                outputFile << date[i] << " " << value[i] << endl;
+            }
+            outputFile.close();
+
+        } else {
+            
+            ofstream newDaily;
+            newDaily.open("dailyCollection.txt");
+            
+            newDaily << str << " " << totalCharge << endl;
+            newDaily.close();
+        }    
+    } 
+
 }
 
 string getTime()
@@ -392,10 +412,6 @@ double Calc(char op, vector<Cart>& cart)
     cout << "Enter notes: ";
     cin.ignore();
     getline(cin,notes);
-
-    // cout << type << endl;
-    // cout << serv[type - 1].price << endl;
-    // system("pause");
 
     double servicePayment = qty * serv[type - 1].price;
 

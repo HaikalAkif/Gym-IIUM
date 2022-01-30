@@ -10,7 +10,7 @@ namespace utils {
     void fontColor(int Color){
         SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), Color);
     }
-
+    // set font for the program
     void setfont(){
         CONSOLE_FONT_INFOEX font;
         font.cbSize = sizeof(font);
@@ -25,7 +25,7 @@ namespace utils {
 
         SetCurrentConsoleFontEx(GetStdHandle(STD_OUTPUT_HANDLE), FALSE, &font);
     }
-
+    // show=true disable=false
     void ShowConsoleCursor(bool showFlag){
         HANDLE out = GetStdHandle(STD_OUTPUT_HANDLE);
         CONSOLE_CURSOR_INFO cursorInfo;
@@ -38,6 +38,7 @@ namespace utils {
     HANDLE Console = GetStdHandle(STD_OUTPUT_HANDLE);
     COORD CursorPosition;
 
+    // x-direction, y-direction
     void gotoxy(int x, int y){
         CursorPosition.X = x;
         CursorPosition.Y = y;

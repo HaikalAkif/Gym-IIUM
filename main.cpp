@@ -35,9 +35,9 @@ void Services();
 void Add();
 double Calc(char,vector<Cart>&);
 void checkOut(double, vector<Cart>&);
-void dailyFile(double);
-void custFile(vector<Cart>&);
-void collectionFile(vector<Cart>&, double);
+void OUTFile(double);
+void OUTFile(vector<Cart>&);
+void OUTFile(vector<Cart>&, double);
 void Review();
 
 void dailyCollection();
@@ -236,9 +236,9 @@ void checkOut(double totalCharge,vector<Cart>& cart){
     totalCharge += serv[0].price;
     cout << "Grand payment: RM" << totalCharge << endl;
 
-    dailyFile(totalCharge);
-    custFile(cart);
-    collectionFile(cart,totalCharge);
+    OUTFile(totalCharge);
+    OUTFile(cart);
+    OUTFile(cart,totalCharge);
 
     cout << endl << "Press any key to continue: ";
     system("pause>nul");
@@ -246,7 +246,7 @@ void checkOut(double totalCharge,vector<Cart>& cart){
     cart.clear();
 }
 
-void collectionFile(vector<Cart>& cart,double totalCharge){
+void OUTFile(vector<Cart>& cart,double totalCharge){
     fstream cFile;
     double type[6] = {0,0,0,0,0,0};
     string tempp;
@@ -261,11 +261,11 @@ void collectionFile(vector<Cart>& cart,double totalCharge){
             }
             for(int i = 0 ; i < cart.size(); i++){
                 switch(cart[i].type){
-                    case 2: type[0] += cart[i].payment; break;
-                    case 3: type[1] += cart[i].payment; break;
-                    case 4: type[2] += cart[i].payment; break;
-                    case 5: type[3] += cart[i].payment; break;
-                    case 6: type[4] += cart[i].payment; break;
+                    case 2: *(type + 0) += cart[i].payment; break;
+                    case 3: *(type + 1) += cart[i].payment; break;
+                    case 4: *(type + 2) += cart[i].payment; break;
+                    case 5: *(type + 3) += cart[i].payment; break;
+                    case 6: *(type + 4) += cart[i].payment; break;
                 }
             }
             type[5] += totalCharge;
@@ -282,11 +282,11 @@ void collectionFile(vector<Cart>& cart,double totalCharge){
             if(newCollection.is_open()){
                 for(int i = 0 ; i < cart.size(); i++){
                     switch(cart[i].type){
-                        case 2: type[0] += cart[i].payment; break;
-                        case 3: type[1] += cart[i].payment; break;
-                        case 4: type[2] += cart[i].payment; break;
-                        case 5: type[3] += cart[i].payment; break;
-                        case 6: type[4] += cart[i].payment; break;
+                        case 2: *(type + 0) += cart[i].payment; break;
+                        case 3: *(type + 1) += cart[i].payment; break;
+                        case 4: *(type + 2) += cart[i].payment; break;
+                        case 5: *(type + 3) += cart[i].payment; break;
+                        case 6: *(type + 4) += cart[i].payment; break;
                     }
                 }
                 type[5] += totalCharge;
@@ -300,7 +300,7 @@ void collectionFile(vector<Cart>& cart,double totalCharge){
     } 
 }
 
-void custFile(vector<Cart>& cart){
+void OUTFile(vector<Cart>& cart){
     ofstream cust;
 
     cust.open("Customers.txt",fstream::app);
@@ -311,7 +311,7 @@ void custFile(vector<Cart>& cart){
     cust.close();
 }
 
-void dailyFile(double totalCharge){
+void OUTFile(double totalCharge){
     fstream outputFile;
 
     vector<string> date;

@@ -53,8 +53,8 @@ int main()
         system("cls");
 
         cout << "IIUM Gym Management" << endl;
-        cout << "1. Services" << endl;
-        cout << "2. Daily collection " << endl;
+        cout << "1. Services Order" << endl;
+        cout << "2. Our Daily collection " << endl;
         cout << "3. Display total collection by service type" << endl;
         cout << "4. Exit" << endl;
         
@@ -130,7 +130,7 @@ void Services(){
 
         cout << "1. Add services" << endl;
         cout << "2. Review services" << endl;
-        cout << "3. Back" << endl;
+        cout << "3. Back to main menu" << endl;
         cout << endl << "Enter menu: ";
         op = getch();
 
@@ -199,7 +199,7 @@ void Add(){
             for(int i = 1; i < 6; i++){
                 cout << serv[i].type - 1 << "\t" << serv[i].name << "\t" << serv[i].price << endl;
             }
-            cout << "6. Checkout" << endl;
+            cout << "6.\t Checkout" << endl;
             cout << "Choose type: ";
             op = getch();
 

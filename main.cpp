@@ -45,17 +45,9 @@ void totalCollection();
 
 void checkFile();
 
-<<<<<<< Updated upstream
-int main(){
-=======
-<<<<<<< HEAD
 int main()
 {
     
-=======
-int main(){
->>>>>>> 1639bf115dfa149cb7cfc3ac01b9e14c383939f3
->>>>>>> Stashed changes
     while(true){
         
         system("cls");
@@ -256,16 +248,8 @@ void checkOut(double totalCharge,vector<Cart>& cart){
     cart.clear();
 }
 
-<<<<<<< Updated upstream
 void OUTFile(vector<Cart>& cart,double totalCharge){
-=======
-<<<<<<< HEAD
-void OUTFile(vector<Cart>& cart,double totalCharge)
-{
-=======
-void collectionFile(vector<Cart>& cart,double totalCharge){
->>>>>>> 1639bf115dfa149cb7cfc3ac01b9e14c383939f3
->>>>>>> Stashed changes
+
     fstream cFile;
     double type[6] = {0,0,0,0,0,0};
     string tempp;
@@ -319,16 +303,9 @@ void collectionFile(vector<Cart>& cart,double totalCharge){
     } 
 }
 
-<<<<<<< Updated upstream
-void OUTFile(vector<Cart>& cart){
-=======
-<<<<<<< HEAD
 void OUTFile(vector<Cart>&cart)
 {
-=======
-void custFile(vector<Cart>& cart){
->>>>>>> 1639bf115dfa149cb7cfc3ac01b9e14c383939f3
->>>>>>> Stashed changes
+
     ofstream cust;
 
     cust.open("Customers.txt",fstream::app);
@@ -339,16 +316,8 @@ void custFile(vector<Cart>& cart){
     cust.close();
 }
 
-<<<<<<< Updated upstream
 void OUTFile(double totalCharge){
-=======
-<<<<<<< HEAD
-void OUTFile(double totalCharge)
-{
-=======
-void dailyFile(double totalCharge){
->>>>>>> 1639bf115dfa149cb7cfc3ac01b9e14c383939f3
->>>>>>> Stashed changes
+
     fstream outputFile;
 
     vector<string> date;

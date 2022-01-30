@@ -99,7 +99,6 @@ void totalCollection(){
 void dailyCollection(){
     ifstream daily;
     string temp[2];
-    double temp2;
 
     daily.open("dailyCollection.txt");
     system("cls");
@@ -145,10 +144,6 @@ void Services(){
 
 void Review(){
     ifstream reviewFile;
-    vector<string> lines;
-    int type, qty;
-    double payment;
-    string notes;
     string input[4];
 
     reviewFile.open("Customers.txt");

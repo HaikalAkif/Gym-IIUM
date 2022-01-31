@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 #include <conio.h>
 #include <vector>
 #include <fstream>
@@ -197,9 +198,9 @@ void Add(){
             cout << endl << "Service currently provided\tCart: " << cart.size() << endl;
             cout << "Type\tService\tPrice(RM)" << endl;
             for(int i = 1; i < 6; i++){
-                cout << serv[i].type - 1 << "\t" << serv[i].name << "\t" << serv[i].price << endl;
+                cout << serv[i].type - 1 << "\t" << serv[i].name << "\t" << fixed << setprecision(2) << serv[i].price << endl;
             }
-            cout << "6.\t Checkout" << endl;
+            cout << "6.\tCheckout" << endl;
             cout << "Choose type: ";
             op = getch();
 
@@ -229,9 +230,9 @@ void checkOut(double totalCharge,vector<Cart>& cart){
         }
         cout << "\t\t" << cart[i].qty << "\t" << cart[i].payment << endl;
     }
-    cout << endl << "Including entry fee: RM" << serv[0].price << endl;
+    cout << endl << "Including entry fee: RM" << fixed << setprecision(2) << serv[0].price << endl;
     totalCharge += serv[0].price;
-    cout << "Grand payment: RM" << totalCharge << endl;
+    cout << "Grand payment: RM" << fixed << setprecision(2) << totalCharge << endl;
 
     OUTFile(totalCharge);
     OUTFile(cart);

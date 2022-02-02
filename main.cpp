@@ -31,26 +31,21 @@ const Service serv[6] = {{1,"Entry fee", 5.00},
                          {6,"Sauna",4.00}};
 
 string getTime();
-
 void Services();
 void Add();
+void Review();
 double Calc(char,vector<Cart>&);
 void checkOut(double, vector<Cart>&);
 void OUTFile(double);
 void OUTFile(vector<Cart>&);
 void OUTFile(vector<Cart>&, double);
-void Review();
-
 void dailyCollection();
 void totalCollection();
-
 void checkFile();
 
 int main()
-{
-    
+{ 
     while(true){
-        
         system("cls");
 
         cout << "IIUM Gym Management" << endl;
@@ -72,61 +67,9 @@ int main()
     }
 }
 
-void totalCollection(){
-    ifstream paymentFile;
-    double type[6];
-
-    paymentFile.open("Collection.txt");
-
-    system("cls");
-
-    if(paymentFile.is_open()){
-        for(int i = 0; i < 6; i++){
-            paymentFile >> type[i];
-            if(i < 5)
-                cout << serv[i + 1].name << "\t: " << type[i] << endl;
-        }
-        cout << "Total collections: " << type[5] << endl;
-        
-    } 
-    else {
-        cout << "ERROR! A file is currently missing!" << endl;
-        cout << "Missing file: Collection.txt" << endl;
-    }
-    cout << "Press any key to continue: ";
-    system("pause>nul");
-}
-
-void dailyCollection(){
-    ifstream daily;
-    string temp[2];
-
-    daily.open("dailyCollection.txt");
-    system("cls");
-
-    if(daily.is_open()){
-        cout << "Date\t\tCollections" << endl;
-        while(!daily.eof()){
-            for(int i = 0; i < 2; i++){
-                daily >> temp[i];
-                cout << temp[i] << "\t\t";
-            }
-            cout << endl;
-        }
-    }
-    else{
-        cout << "ERROR! A file is currently missing!" << endl;
-        cout << "Missing file: Collection.txt" << endl;
-    }
-    cout << "Press any key to continue: ";
-    system("pause>nul");
-}
-
 void Services(){
     char op;
-
     do{
-
         system("cls");
 
         cout << "1. Add services" << endl;
@@ -143,33 +86,6 @@ void Services(){
     }while(op != '3');
 }
 
-void Review(){
-    ifstream reviewFile;
-    string input[4];
-
-    reviewFile.open("Customers.txt");
-    system("cls");
-
-
-    if(reviewFile.is_open()){
-        cout << "History of the customers' transactions" << endl;
-        cout << "\nService type\tQuantity\tPayment\tNotes" << endl;
-        while(!reviewFile.eof()){
-            for(int i = 0; i < 4; i++){
-                reviewFile >> input[i];
-                cout << input[i] << "\t";
-            }
-            cout << endl;
-        }
-    } 
-    else{
-        cout << "ERROR! A file is currently missing!" << endl;
-        cout << "Missing file: Customers.txt" << endl;
-    }
-    cout << "Press any key to continue: ";
-    system("pause>nul");
-}
-
 void Add(){
     string name;
     int matNo;
@@ -184,16 +100,13 @@ void Add(){
         system("cls");
         cout << "Enter the following" << endl;
         cout << "Full Name: ";
-
         getline(cin,name);
-
         cout << "Matric Number: ";
         cin >> matNo;
         cout << "Phone Number: ";
         cin >> phoneNo;
 
         do{
-
             system("cls");
             cout << endl << "Service currently provided\tCart: " << cart.size() << endl;
             cout << "Type\tService\tPrice(RM)" << endl;
@@ -217,6 +130,32 @@ void Add(){
         repeat = getch();
 
     }while(repeat == 'Y' || repeat == 'y');
+}
+
+void Review(){
+    ifstream reviewFile;
+    string input[4];
+
+    reviewFile.open("Customers.txt");
+    system("cls");
+
+    if(reviewFile.is_open()){
+        cout << "History of the customers' transactions" << endl;
+        cout << "\nService type\tQuantity\tPayment\tNotes" << endl;
+        while(!reviewFile.eof()){
+            for(int i = 0; i < 4; i++){
+                reviewFile >> input[i];
+                cout << input[i] << "\t";
+            }
+            cout << endl;
+        }
+    } 
+    else{
+        cout << "ERROR! A file is currently missing!" << endl;
+        cout << "Missing file: Customers.txt" << endl;
+    }
+    cout << "Press any key to continue: ";
+    system("pause>nul");
 }
 
 void checkOut(double totalCharge,vector<Cart>& cart){
@@ -301,7 +240,6 @@ void OUTFile(vector<Cart>& cart,double totalCharge){
 
 void OUTFile(vector<Cart>&cart)
 {
-
     ofstream cust;
 
     cust.open("Customers.txt",fstream::app);
@@ -379,7 +317,6 @@ double Calc(char op, vector<Cart>& cart){
     cout << "Enter Quantity: ";
     cin >> qty;
 
-
     type = (int)op - 48 + 1;
 
     cout << "Enter notes: ";
@@ -393,4 +330,54 @@ double Calc(char op, vector<Cart>& cart){
     cart.push_back(currentCart);
     
     return servicePayment;
+}
+
+void dailyCollection(){
+    ifstream daily;
+    string temp[2];
+
+    daily.open("dailyCollection.txt");
+    system("cls");
+
+    if(daily.is_open()){
+        cout << "Date\t\tCollections" << endl;
+        while(!daily.eof()){
+            for(int i = 0; i < 2; i++){
+                daily >> temp[i];
+                cout << temp[i] << "\t\t";
+            }
+            cout << endl;
+        }
+    }
+    else{
+        cout << "ERROR! A file is currently missing!" << endl;
+        cout << "Missing file: dailyCollection.txt" << endl;
+    }
+    cout << "Press any key to continue: ";
+    system("pause>nul");
+}
+
+void totalCollection(){
+    ifstream paymentFile;
+    double type[6];
+
+    paymentFile.open("Collection.txt");
+
+    system("cls");
+
+    if(paymentFile.is_open()){
+        for(int i = 0; i < 6; i++){
+            paymentFile >> type[i];
+            if(i < 5)
+                cout << serv[i + 1].name << "\t: " << type[i] << endl;
+        }
+        cout << "Total collections: " << type[5] << endl;
+        
+    } 
+    else {
+        cout << "ERROR! A file is currently missing!" << endl;
+        cout << "Missing file: Collection.txt" << endl;
+    }
+    cout << "Press any key to continue: ";
+    system("pause>nul");
 }

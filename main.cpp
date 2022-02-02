@@ -100,6 +100,7 @@ void Add(){
         system("cls");
         cout << "Enter the following" << endl;
         cout << "Full Name: ";
+        cin.ignore();
         getline(cin,name);
         cout << "Matric Number: ";
         cin >> matNo;
@@ -126,7 +127,7 @@ void Add(){
         checkOut(totalCharge,cart);
 
         system("cls");
-        cout << "Repeat the order? (Y/y) to repeat\nPress any key to continue: ";
+        cout << "(Y/y) - repeat the order, any key - continue: ";
         repeat = getch();
 
     }while(repeat == 'Y' || repeat == 'y');
@@ -183,20 +184,45 @@ void checkOut(double totalCharge,vector<Cart>& cart){
     cart.clear();
 }
 
+// total collection by services
 void OUTFile(vector<Cart>& cart,double totalCharge){
 
-    fstream cFile;
-    double type[6] = {0,0,0,0,0,0};
+    ifstream cFile; // check
     string tempp;
+    double tempD;
 
     cFile.open("Collection.txt");
 
     if(cFile.is_open()){
-        getline(cFile,tempp);
-        if(tempp != ""){
-            for(int i = 0; i < 6; i++){
-                cFile >> type[i];
+
+        int type[6];
+
+        for(int i = 0 ; i < cart.size(); i++){
+            switch(cart[i].type){
+                case 2: *(type + 0) += cart[i].payment; break;
+                case 3: *(type + 1) += cart[i].payment; break;
+                case 4: *(type + 2) += cart[i].payment; break;
+                case 5: *(type + 3) += cart[i].payment; break;
+                case 6: *(type + 4) += cart[i].payment; break;
             }
+        }
+        type[5] += totalCharge;
+
+        ofstream outFile;
+        outFile.open("Collection.txt");
+
+        for(int i = 0; i < 6; i++){
+            outFile << type[i] << " ";
+        }
+        cFile.close();
+        outFile.close();
+
+    } else {
+
+        ofstream newCollection;
+        double type[6] = {0,0,0,0,0,0};
+        newCollection.open("Collection.txt");
+        if(newCollection.is_open()){
             for(int i = 0 ; i < cart.size(); i++){
                 switch(cart[i].type){
                     case 2: *(type + 0) += cart[i].payment; break;
@@ -209,35 +235,15 @@ void OUTFile(vector<Cart>& cart,double totalCharge){
             type[5] += totalCharge;
 
             for(int i = 0; i < 6; i++){
-                cFile << type[i] << " ";
+                newCollection << type[i] << " ";
             }
-            cFile.close();
-
+            newCollection.close();
         }
-        else{
-            ofstream newCollection;
-            newCollection.open("Collection.txt");
-            if(newCollection.is_open()){
-                for(int i = 0 ; i < cart.size(); i++){
-                    switch(cart[i].type){
-                        case 2: *(type + 0) += cart[i].payment; break;
-                        case 3: *(type + 1) += cart[i].payment; break;
-                        case 4: *(type + 2) += cart[i].payment; break;
-                        case 5: *(type + 3) += cart[i].payment; break;
-                        case 6: *(type + 4) += cart[i].payment; break;
-                    }
-                }
-                type[5] += totalCharge;
-
-                for(int i = 0; i < 6; i++){
-                    newCollection << type[i] << " ";
-                }
-                newCollection.close();
-            }
-        }       
-    } 
+    }
+    
 }
 
+// customers outfile
 void OUTFile(vector<Cart>&cart)
 {
     ofstream cust;
@@ -250,9 +256,10 @@ void OUTFile(vector<Cart>&cart)
     cust.close();
 }
 
+// daily collection outfile
 void OUTFile(double totalCharge){
 
-    fstream outputFile;
+    ifstream cFile;
 
     vector<string> date;
     vector<double> value;
@@ -262,36 +269,46 @@ void OUTFile(double totalCharge){
 
     string str = getTime();
 
-    outputFile.open("dailyCollection.txt",fstream::app);
+    cFile.open("dailyCollection.txt");
 
-    if(outputFile.is_open()){
-        getline(outputFile,tempp);
-        if(tempp != ""){
-            while(!outputFile.eof()){
-                outputFile >> temp1 >> temp2;
-                date.push_back(temp1);
-                value.push_back(temp2);
-            }
-            for(unsigned int i = 0; i < date.size(); i++){
-                if(date[i] == str){
-                    value[i] += totalCharge;
-                    break;
-                }
-            }
-            for(unsigned int i = 0; i < date.size(); i++){
-                outputFile << date[i] << " " << value[i] << endl;
-            }
-            outputFile.close();
+    if(cFile.is_open()){
+        
+        while(!cFile.eof()){
+            cFile >> temp1 >> temp2;
+            date.push_back(temp1);
+            value.push_back(temp2);
         }
-        else {
-            
-            ofstream newDaily;
-            newDaily.open("dailyCollection.txt");
-            
-            newDaily << str << " " << totalCharge << endl;
-            newDaily.close();
-        }    
-    } 
+
+        for(int i = 0; i < date.size() - 1; i++){
+            if(date[i] == str)
+                value[i] += totalCharge;
+        }
+
+        fstream outFile1;
+        ofstream outFile;
+
+        outFile.open("dailyCollection.txt");
+        outFile1.open("dailyCollection.txt",fstream::app);
+
+        for(int i = 0; i < date.size() - 1; i++){
+            if(date[i] == str)
+                outFile << date[i] << " " << value[i] << endl;
+            else if(date[i] != str)
+                outFile1 << date[i] << " " << value[i] << endl;
+        }
+
+
+        cFile.close();
+        outFile1.close();
+        outFile.close();
+    } else {
+
+        ofstream newDaily;
+        newDaily.open("dailyCollection.txt");
+        
+        newDaily << str << " " << totalCharge << endl;
+        newDaily.close();
+    }
 }
 
 string getTime(){
@@ -334,20 +351,28 @@ double Calc(char op, vector<Cart>& cart){
 
 void dailyCollection(){
     ifstream daily;
-    string temp[2];
+    string temp[2] = {"",""};
+    vector<string> temp1;
+    vector<double> temp2;
+    string temporary;
+    double collectionTemp;
+    int i = 0;
 
     daily.open("dailyCollection.txt");
     system("cls");
 
     if(daily.is_open()){
-        cout << "Date\t\tCollections" << endl;
+        cout << "Date\t   Collections" << endl;
+
         while(!daily.eof()){
-            for(int i = 0; i < 2; i++){
-                daily >> temp[i];
-                cout << temp[i] << "\t\t";
-            }
-            cout << endl;
+            daily >> temporary >> collectionTemp;
+            temp1.push_back(temporary);
+            temp2.push_back(collectionTemp);
         }
+        for(int i = 0; i < temp1.size() - 1; i++){
+            cout << temp1[i] << "\t\t" << temp2[i] << endl;
+        }
+
     }
     else{
         cout << "ERROR! A file is currently missing!" << endl;

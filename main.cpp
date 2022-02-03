@@ -127,7 +127,7 @@ void Add(){
         checkOut(totalCharge,cart);
 
         system("cls");
-        cout << "(Y/y) - repeat the order, any key - continue: ";
+        cout << "Press (Y/y) to repeat the order or any key to continue: ";
         repeat = getch();
 
     }while(repeat == 'Y' || repeat == 'y');
@@ -362,7 +362,7 @@ void dailyCollection(){
     system("cls");
 
     if(daily.is_open()){
-        cout << "Date\t   Collections" << endl;
+        cout << "Date\t\t   Collections" << endl;
 
         while(!daily.eof()){
             daily >> temporary >> collectionTemp;

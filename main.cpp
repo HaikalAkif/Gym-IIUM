@@ -92,7 +92,6 @@ void Services(){
 void Add(){
     fontColor(11);
     setfont();
-    ShowConsoleCursor(false); // Hide cursor
     string name;
     int matNo;
     int phoneNo;
@@ -127,10 +126,9 @@ void Add(){
             op = getch();
             fontColor(11);
 
-            if(op == '1' || op == '2' || op == '3' || op == '4' || op == '5'){
+            if(op == '1' || op == '2' || op == '3' || op == '4' || op == '5'){ // if the user choose a service type
                 totalCharge += Calc(op,cart); // add the total charge
             }
-
         }while(op != '6');
 
         checkOut(totalCharge,cart);
@@ -219,7 +217,8 @@ void OUTFile(vector<Cart>& cart,double totalCharge){ // total collection by serv
 
     if(cFile.is_open()){
 
-        int type[6];
+        double type[6];
+        cFile >> type[0] >> type[1] >> type[2] >> type[3] >> type[4] >> type[5];
 
         for(int i = 0 ; i < cart.size(); i++){
             switch(cart[i].type){ // check the type of the service
@@ -263,8 +262,7 @@ void OUTFile(vector<Cart>& cart,double totalCharge){ // total collection by serv
             }
             newCollection.close();
         }
-    }
-    
+    }  
 }
 
 void OUTFile(vector<Cart>&cart){ // customers outfile
@@ -366,10 +364,8 @@ double Calc(char op, vector<Cart>& cart){
     cin.ignore();
     getline(cin,notes); //get the full sentece means include the space button
 
-    double servicePayment = qty * serv[type - 1].price;
-
+    double servicePayment = qty * serv[type - 1].price; // calculate the payment of the service
     Cart currentCart = {type,qty,notes,servicePayment};
-
     cart.push_back(currentCart);
     
     return servicePayment;
@@ -400,7 +396,6 @@ void dailyCollection(){ //read daily collection
         for(int i = 0; i < temp1.size() - 1; i++){
             cout << fixed << setprecision(2) << temp1[i] << "\t\t" << temp2[i] << endl;
         }
-
     }
     else{
         cout << "ERROR! A file is currently missing!" << endl;
